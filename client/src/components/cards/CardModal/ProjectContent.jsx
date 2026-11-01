@@ -374,9 +374,11 @@ const ProjectContent = React.memo(() => {
                 </div>
               )}
               {!isInArchiveList && !isInTrashList && card.listChangedAt && (
-                <div className={styles.attachments}>
-                  <div className={styles.text}>In column</div>
-                  <DaysInList cardId={card.id} isExact />
+                <div className={styles.inColumnRow}>
+                  <div className={styles.attachments}>
+                    <div className={styles.text}>In column</div>
+                    <DaysInList cardId={card.id} isExact />
+                  </div>
                 </div>
               )}
               {labelIds.length > 0 && (

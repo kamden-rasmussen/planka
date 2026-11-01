@@ -13,6 +13,7 @@ import selectors from '../../../selectors';
 import markdownToText from '../../../utils/markdown-to-text';
 import { BoardViews } from '../../../constants/Enums';
 import UserAvatar from '../../users/UserAvatar';
+import DaysInList from '../DaysInList';
 import LabelChip from '../../labels/LabelChip';
 
 import styles from './InlineContent.module.scss';
@@ -97,6 +98,7 @@ const InlineContent = React.memo(({ cardId }) => {
           {descriptionText}
         </span>
       )}
+      <DaysInList cardId={cardId} className={styles.daysInList} />
     </div>
   );
 });

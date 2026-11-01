@@ -13,6 +13,7 @@ import selectors from '../../../selectors';
 import markdownToText from '../../../utils/markdown-to-text';
 import { BoardViews } from '../../../constants/Enums';
 import TimeAgo from '../../common/TimeAgo';
+import DaysInList from '../DaysInList';
 import LabelChip from '../../labels/LabelChip';
 import CustomFieldValueChip from '../../custom-field-values/CustomFieldValueChip';
 
@@ -144,6 +145,9 @@ const StoryContent = React.memo(({ cardId }) => {
             )}
           </span>
         )}
+        <div className={styles.daysInListRow}>
+          <DaysInList cardId={cardId} />
+        </div>
       </div>
     </>
   );

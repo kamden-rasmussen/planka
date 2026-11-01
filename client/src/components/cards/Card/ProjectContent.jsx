@@ -17,6 +17,7 @@ import { BoardMembershipRoles, BoardViews } from '../../../constants/Enums';
 import TaskList from './TaskList';
 import DueDateChip from '../DueDateChip';
 import StopwatchChip from '../StopwatchChip';
+import DaysInList from '../DaysInList';
 import TimeAgo from '../../common/TimeAgo';
 import UserAvatar from '../../users/UserAvatar';
 import LabelChip from '../../labels/LabelChip';
@@ -111,11 +112,6 @@ const ProjectContent = React.memo(({ cardId }) => {
     },
     [cardId, card.stopwatch, dispatch],
   );
-
-  const daysInList =
-    card.listChangedAt && !isListArchiveOrTrash(list)
-      ? Math.max(0, Math.floor((Date.now() - new Date(card.listChangedAt).getTime()) / 86400000))
-      : null;
 
   const hasInformation =
     card.description ||
@@ -255,14 +251,7 @@ const ProjectContent = React.memo(({ cardId }) => {
         </span>
       )}
       {!isCompact && usersNode}
-      {daysInList !== null && (
-        <span
-          className={styles.daysInList}
-          title={`In this column for ${daysInList} ${daysInList === 1 ? 'day' : 'days'}`}
-        >
-          {daysInList}d
-        </span>
-      )}
+      <DaysInList cardId={cardId} className={styles.daysInList} />
     </div>
   );
 });

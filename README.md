@@ -1,3 +1,5 @@
+> **Modified copy notice:** This is an unofficial, modified copy of [PLANKA](https://github.com/plankanban/planka) 2.1.1, patched for security issues (path traversal fix backported from 2.2.1 and dependency updates). It is not affiliated with or endorsed by PLANKA Software GmbH. It is used privately under the PLANKA Community License (see `LICENSE.md`).
+
 <div align="center">
 
   ![Logo](https://raw.githubusercontent.com/plankanban/planka/master/assets/logo.png)

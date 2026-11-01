@@ -32,6 +32,7 @@ import ExpandableMarkdown from '../../common/ExpandableMarkdown';
 import EditMarkdown from '../../common/EditMarkdown';
 import ConfirmationStep from '../../common/ConfirmationStep';
 import UserAvatar from '../../users/UserAvatar';
+import DaysInList from '../DaysInList';
 import BoardMembershipsStep from '../../board-memberships/BoardMembershipsStep';
 import LabelChip from '../../labels/LabelChip';
 import LabelsStep from '../../labels/LabelsStep';
@@ -317,7 +318,8 @@ const ProjectContent = React.memo(() => {
             card.stopwatch ||
             board.alwaysDisplayCardCreator ||
             userIds.length > 0 ||
-            labelIds.length > 0) && (
+            labelIds.length > 0 ||
+            (!isInArchiveList && !isInTrashList && card.listChangedAt)) && (
             <div className={styles.moduleWrapper}>
               {board.alwaysDisplayCardCreator && (
                 <div className={styles.attachments}>
@@ -369,6 +371,12 @@ const ProjectContent = React.memo(() => {
                       </button>
                     </BoardMembershipsPopup>
                   )}
+                </div>
+              )}
+              {!isInArchiveList && !isInTrashList && card.listChangedAt && (
+                <div className={styles.attachments}>
+                  <div className={styles.text}>In column</div>
+                  <DaysInList cardId={card.id} isExact />
                 </div>
               )}
               {labelIds.length > 0 && (

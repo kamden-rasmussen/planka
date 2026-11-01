@@ -3,19 +3,24 @@
  * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
  */
 
-import React, { useMemo } from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import { useSelector } from "react-redux";
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import { useSelector } from 'react-redux';
 
-import selectors from "../../../selectors";
-import { isListArchiveOrTrash } from "../../../utils/record-helpers";
+import selectors from '../../../selectors';
+import { isListArchiveOrTrash } from '../../../utils/record-helpers';
+import {
+  formatExactDuration,
+  formatShortDuration,
+  getDaysInList,
+  getSeverity,
+} from '../../../utils/time-in-list';
+import { ListTypes } from '../../../constants/Enums';
 
-import styles from "./DaysInList.module.scss";
+import styles from './DaysInList.module.scss';
 
-const MS_IN_DAY = 24 * 60 * 60 * 1000;
-
-const DaysInList = React.memo(({ cardId, className }) => {
+const DaysInList = React.memo(({ cardId, isExact, className }) => {
   const selectCardById = useMemo(() => selectors.makeSelectCardById(), []);
   const selectListById = useMemo(() => selectors.makeSelectListById(), []);
 
@@ -26,29 +31,36 @@ const DaysInList = React.memo(({ cardId, className }) => {
     return null;
   }
 
-  const days = Math.max(
-    0,
-    Math.floor(
-      (Date.now() - new Date(card.listChangedAt).getTime()) / MS_IN_DAY,
-    ),
-  );
+  const days = getDaysInList(card.listChangedAt);
+
+  // Cards that are finished (closed column) are never highlighted.
+  const severity = list.type === ListTypes.CLOSED ? null : getSeverity(days);
 
   return (
     <span
-      className={classNames(styles.wrapper, className)}
-      title={`In this column for ${days} ${days === 1 ? "day" : "days"}`}
+      className={classNames(
+        styles.wrapper,
+        severity === 'warning' && styles.warning,
+        severity === 'danger' && styles.danger,
+        className,
+      )}
+      title={`In this column for ${formatExactDuration(card.listChangedAt)} (${days} ${
+        days === 1 ? 'day' : 'days'
+      })`}
     >
-      {days}d
+      {isExact ? formatExactDuration(card.listChangedAt) : formatShortDuration(days)}
     </span>
   );
 });
 
 DaysInList.propTypes = {
   cardId: PropTypes.string.isRequired,
+  isExact: PropTypes.bool,
   className: PropTypes.string,
 };
 
 DaysInList.defaultProps = {
+  isExact: false,
   className: undefined,
 };
 

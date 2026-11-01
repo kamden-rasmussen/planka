@@ -10,4 +10,14 @@
     line-height: 24px;
     white-space: nowrap;
   }
+
+  .warning {
+    color: #b7791f;
+    font-weight: bold;
+  }
+
+  .danger {
+    color: #d93025;
+    font-weight: bold;
+  }
 }

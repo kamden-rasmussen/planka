@@ -112,6 +112,11 @@ const ProjectContent = React.memo(({ cardId }) => {
     [cardId, card.stopwatch, dispatch],
   );
 
+  const daysInList =
+    card.listChangedAt && !isListArchiveOrTrash(list)
+      ? Math.max(0, Math.floor((Date.now() - new Date(card.listChangedAt).getTime()) / 86400000))
+      : null;
+
   const hasInformation =
     card.description ||
     card.dueDate ||
@@ -250,6 +255,14 @@ const ProjectContent = React.memo(({ cardId }) => {
         </span>
       )}
       {!isCompact && usersNode}
+      {daysInList !== null && (
+        <span
+          className={styles.daysInList}
+          title={`In this column for ${daysInList} ${daysInList === 1 ? 'day' : 'days'}`}
+        >
+          {daysInList}d
+        </span>
+      )}
     </div>
   );
 });

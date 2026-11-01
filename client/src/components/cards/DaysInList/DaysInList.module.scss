@@ -3,6 +3,8 @@
  * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
  */
 
+@use './severity-colors' as *;
+
 :global(#app) {
   .wrapper {
     color: #6a808b;
@@ -12,12 +14,12 @@
   }
 
   .warning {
-    color: #b7791f;
+    color: $severity-warning;
     font-weight: bold;
   }
 
   .danger {
-    color: #d93025;
+    color: $severity-danger;
     font-weight: bold;
   }
 }

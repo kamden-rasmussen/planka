@@ -14,9 +14,8 @@ import {
   formatExactDuration,
   formatShortDuration,
   getDaysInList,
-  getSeverity,
 } from '../../../utils/time-in-list';
-import { ListTypes } from '../../../constants/Enums';
+import useDaysInListSeverity from './useDaysInListSeverity';
 
 import styles from './DaysInList.module.scss';
 
@@ -26,15 +25,13 @@ const DaysInList = React.memo(({ cardId, isExact, className }) => {
 
   const card = useSelector((state) => selectCardById(state, cardId));
   const list = useSelector((state) => selectListById(state, card.listId));
+  const severity = useDaysInListSeverity(cardId);
 
   if (!card.listChangedAt || isListArchiveOrTrash(list)) {
     return null;
   }
 
   const days = getDaysInList(card.listChangedAt);
-
-  // Cards that are finished (closed column) are never highlighted.
-  const severity = list.type === ListTypes.CLOSED ? null : getSeverity(days);
 
   return (
     <span

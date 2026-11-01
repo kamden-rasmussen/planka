@@ -3,6 +3,8 @@
  * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
  */
 
+@use '../DaysInList/severity-colors' as *;
+
 :global(#app) {
   .actionsButton {
     background: none;
@@ -46,6 +48,30 @@
   .contentDisabled {
     filter: saturate(0.5);
     opacity: 0.64;
+  }
+
+  .wrapperWarning,
+  .wrapperDanger {
+    &:before {
+      border: 1px solid;
+      border-radius: 3px;
+      bottom: 0;
+      content: '';
+      left: 0;
+      pointer-events: none;
+      position: absolute;
+      right: 0;
+      top: 0;
+      z-index: 1;
+    }
+  }
+
+  .wrapperWarning:before {
+    border-color: $severity-warning;
+  }
+
+  .wrapperDanger:before {
+    border-color: $severity-danger;
   }
 
   .wrapper {

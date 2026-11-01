@@ -21,6 +21,7 @@ import StoryContent from './StoryContent';
 import InlineContent from './InlineContent';
 import EditName from './EditName';
 import CardActionsStep from '../CardActionsStep';
+import useDaysInListSeverity from '../DaysInList/useDaysInListSeverity';
 
 import styles from './Card.module.scss';
 
@@ -55,6 +56,8 @@ const Card = React.memo(({ id, isInline }) => {
     const boardMembership = selectors.selectCurrentUserMembershipForCurrentBoard(state);
     return !!boardMembership && boardMembership.role === BoardMembershipRoles.EDITOR;
   });
+
+  const severity = useDaysInListSeverity(id);
 
   const dispatch = useDispatch();
   const [isEditNameOpened, setIsEditNameOpened] = useState(false);
@@ -130,7 +133,13 @@ const Card = React.memo(({ id, isInline }) => {
 
   return (
     <div
-      className={classNames(styles.wrapper, isHighlightedAsRecent && styles.wrapperRecent, 'card')}
+      className={classNames(
+        styles.wrapper,
+        isHighlightedAsRecent && styles.wrapperRecent,
+        severity === 'warning' && styles.wrapperWarning,
+        severity === 'danger' && styles.wrapperDanger,
+        'card',
+      )}
     >
       {card.isPersisted ? (
         <>

@@ -33,6 +33,8 @@ export default class extends BaseModel {
     alwaysDisplayCardCreator: attr(),
     displayCardAges: attr(),
     expandTaskListsByDefault: attr(),
+    warningDays: attr(),
+    dangerDays: attr(),
     context: attr(),
     view: attr(),
     search: attr(),

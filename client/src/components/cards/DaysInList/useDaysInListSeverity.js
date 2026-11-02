@@ -14,10 +14,12 @@ import { ListTypes } from '../../../constants/Enums';
 // Returns 'warning' | 'danger' | null. Cards in closed lists and archive/trash are never flagged.
 const useDaysInListSeverity = (cardId) => {
   const selectCardById = useMemo(() => selectors.makeSelectCardById(), []);
+  const selectBoardById = useMemo(() => selectors.makeSelectBoardById(), []);
   const selectListById = useMemo(() => selectors.makeSelectListById(), []);
 
   const card = useSelector((state) => selectCardById(state, cardId));
   const list = useSelector((state) => selectListById(state, card.listId));
+  const board = useSelector((state) => (list ? selectBoardById(state, list.boardId) : null));
 
   if (
     !card.listChangedAt ||
@@ -28,7 +30,11 @@ const useDaysInListSeverity = (cardId) => {
     return null;
   }
 
-  return getSeverity(getDaysInList(card.listChangedAt));
+  return getSeverity(
+    getDaysInList(card.listChangedAt),
+    board && board.warningDays,
+    board && board.dangerDays,
+  );
 };
 
 export default useDaysInListSeverity;

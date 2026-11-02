@@ -78,6 +78,16 @@
  *           default: false
  *           description: Whether to expand task lists by default
  *           example: false
+ *         warningDays:
+ *           type: number
+ *           nullable: true
+ *           description: Days in a column before a card is highlighted as a warning (null = default 30, 0 = off)
+ *           example: 30
+ *         dangerDays:
+ *           type: number
+ *           nullable: true
+ *           description: Days in a column before a card is highlighted as danger (null = default 90, 0 = off)
+ *           example: 90
  *         createdAt:
  *           type: string
  *           format: date-time
@@ -152,6 +162,16 @@ module.exports = {
       type: 'boolean',
       defaultsTo: false,
       columnName: 'expand_task_lists_by_default',
+    },
+    warningDays: {
+      type: 'number',
+      allowNull: true,
+      columnName: 'warning_days',
+    },
+    dangerDays: {
+      type: 'number',
+      allowNull: true,
+      columnName: 'danger_days',
     },
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗

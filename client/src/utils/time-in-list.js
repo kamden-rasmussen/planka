@@ -6,8 +6,8 @@
 const MS_IN_DAY = 24 * 60 * 60 * 1000;
 const DAYS_IN_MONTH = 30;
 const DAYS_IN_YEAR = 360;
-const WARNING_DAYS = 30;
-const DANGER_DAYS = 90;
+export const DEFAULT_WARNING_DAYS = 30;
+export const DEFAULT_DANGER_DAYS = 90;
 
 export const getDaysInList = (listChangedAt, now = Date.now()) =>
   Math.max(0, Math.floor((now - new Date(listChangedAt).getTime()) / MS_IN_DAY));
@@ -25,12 +25,21 @@ export const formatShortDuration = (days) => {
   return `${Math.floor(days / DAYS_IN_YEAR)}y`;
 };
 
-export const getSeverity = (days) => {
-  if (days >= DANGER_DAYS) {
+// Board thresholds: null/undefined = default, 0 = that level is turned off.
+const resolveThreshold = (value, fallback) => {
+  if (value === null || value === undefined) {
+    return fallback;
+  }
+
+  return value > 0 ? value : Infinity;
+};
+
+export const getSeverity = (days, warningDays = null, dangerDays = null) => {
+  if (days >= resolveThreshold(dangerDays, DEFAULT_DANGER_DAYS)) {
     return 'danger';
   }
 
-  if (days >= WARNING_DAYS) {
+  if (days >= resolveThreshold(warningDays, DEFAULT_WARNING_DAYS)) {
     return 'warning';
   }
 

@@ -63,6 +63,18 @@
  *                 type: boolean
  *                 description: Whether to expand task lists by default
  *                 example: false
+ *               warningDays:
+ *                 type: number
+ *                 nullable: true
+ *                 minimum: 0
+ *                 description: Days in a column before a card is highlighted as a warning (null = default 30, 0 = off)
+ *                 example: 30
+ *               dangerDays:
+ *                 type: number
+ *                 nullable: true
+ *                 minimum: 0
+ *                 description: Days in a column before a card is highlighted as danger (null = default 90, 0 = off)
+ *                 example: 90
  *               isSubscribed:
  *                 type: boolean
  *                 description: Whether the current user is subscribed to the board
@@ -92,6 +104,9 @@ const { idInput } = require('../../../utils/inputs');
 const Errors = {
   BOARD_NOT_FOUND: {
     boardNotFound: 'Board not found',
+  },
+  INVALID_THRESHOLDS: {
+    invalidThresholds: 'Danger days must be greater than warning days',
   },
 };
 
@@ -130,6 +145,18 @@ module.exports = {
     expandTaskListsByDefault: {
       type: 'boolean',
     },
+    warningDays: {
+      type: 'number',
+      allowNull: true,
+      min: 0,
+      isInteger: true,
+    },
+    dangerDays: {
+      type: 'number',
+      allowNull: true,
+      min: 0,
+      isInteger: true,
+    },
     isSubscribed: {
       type: 'boolean',
     },
@@ -138,6 +165,9 @@ module.exports = {
   exits: {
     boardNotFound: {
       responseType: 'notFound',
+    },
+    invalidThresholds: {
+      responseType: 'unprocessableEntity',
     },
   },
 
@@ -158,6 +188,19 @@ module.exports = {
       throw Errors.BOARD_NOT_FOUND; // Forbidden
     }
 
+    // null = default (30 / 90), 0 = off; only compare when both levels are active.
+    const pickDays = (input, current, fallback) => {
+      const value = input === undefined ? current : input;
+      return value === null ? fallback : value;
+    };
+
+    const warningDays = pickDays(inputs.warningDays, board.warningDays, 30);
+    const dangerDays = pickDays(inputs.dangerDays, board.dangerDays, 90);
+
+    if (warningDays && dangerDays && dangerDays <= warningDays) {
+      throw Errors.INVALID_THRESHOLDS;
+    }
+
     const availableInputKeys = ['id'];
     if (isProjectManager) {
       availableInputKeys.push(
@@ -169,6 +212,8 @@ module.exports = {
         'alwaysDisplayCardCreator',
         'displayCardAges',
         'expandTaskListsByDefault',
+        'warningDays',
+        'dangerDays',
       );
     }
     if (isBoardMember) {
@@ -188,6 +233,8 @@ module.exports = {
       'alwaysDisplayCardCreator',
       'displayCardAges',
       'expandTaskListsByDefault',
+      'warningDays',
+      'dangerDays',
       'isSubscribed',
     ]);
 

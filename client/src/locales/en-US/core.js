@@ -266,6 +266,12 @@ export default {
       optional_inline: 'optional',
       organization: 'Organization',
       others: 'Others',
+      timeInColumnAlerts_title: 'Time in Column Alerts',
+      timeInColumnAlertsHint:
+        'Highlight cards that stay in a column too long. Leave empty for the default, or enter 0 to turn it off.',
+      warningAfterDays: 'Warning (amber) after days',
+      dangerAfterDays: 'Danger (red) after days',
+      dangerMustBeGreaterThanWarning: 'Danger days must be greater than warning days',
       passwordIsSet: 'Password is set',
       phone: 'Phone',
       plankaUsesAppriseToSendNotificationsToOver100PopularServices:
